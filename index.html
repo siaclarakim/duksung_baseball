@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>나에게 어울리는 KBO 구단은?</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>⚾ 나에게 어울리는 KBO 구단은?</h1>
+    <form id="aiForm">
+      <input type="text" id="name" placeholder="이름을 입력하세요" required>
+      <input type="text" id="cheer" placeholder="좋아하는 응원 스타일" required>
+      <input type="text" id="local" placeholder="당신의 고향은?" required>
+      <button type="submit">추천받기</button>
+    </form>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    document.getElementById("aiForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const cheer = document.getElementById("cheer").value;
+      const local = document.getElementById("local").value;
+
+      const response = await fetch("https://assign2-rouge.vercel.app/api/duksungAI", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, cheer, local })
+      });
+
+      const data = await response.json();
+      document.getElementById("result").innerText = data.answer || "오류가 발생했어요.";
+    });
+  </script>
+</body>
+</html>
